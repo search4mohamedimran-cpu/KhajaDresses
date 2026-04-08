@@ -1,0 +1,52 @@
+{
+  "users": [
+    {
+      "id": 1775550284576,
+      "name": "Test User",
+      "email": "test@example.com",
+      "password": "$2b$10$K715gaqCqPDIUj7zwhsiv.MvzfPIksBAjVx7i8g1IeyrszYu5/iaG"
+    }
+  ],
+  "feedbacks": [
+    {
+      "id": 1775550384301,
+      "name": "Test User",
+      "email": "test@example.com",
+      "rating": 5,
+      "comment": "This is a test feedback. Great service!",
+      "date": "April 7, 2026"
+    },
+    {
+      "id": 1678886400000,
+      "name": "Sarah Johnson",
+      "rating": 5,
+      "comment": "Excellent quality uniforms! My kids love wearing them, and they last through the entire school year.",
+      "date": "March 15, 2026"
+    },
+    {
+      "id": 1678454400000,
+      "name": "Michael Chen",
+      "rating": 5,
+      "comment": "Great service and fast delivery. The sizing guide was very helpful.",
+      "date": "March 10, 2026"
+    },
+    {
+      "id": 1678022400000,
+      "name": "Emma Williams",
+      "rating": 4,
+      "comment": "Good quality uniforms. Would love to see more color options for sports wear.",
+      "date": "March 5, 2026"
+    }
+  ],
+  "contacts": [
+    {
+      "id": 1775550411326,
+      "name": "Test User",
+      "email": "test@example.com",
+      "phone": "",
+      "subject": "general",
+      "message": "This is a test message from a subagent.",
+      "date": "2026-04-07T08:26:51.326Z"
+    }
+  ]
+}
