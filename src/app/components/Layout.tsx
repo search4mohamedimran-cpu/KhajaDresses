@@ -1,10 +1,24 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { Menu, X, Search as SearchIcon, User } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, Search as SearchIcon, User, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{ name: string } | null>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const userJson = localStorage.getItem("user");
+    if (userJson) {
+      setCurrentUser(JSON.parse(userJson));
+    }
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setCurrentUser(null);
+  };
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -45,13 +59,29 @@ export function Layout() {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                to="/login"
-                className="flex items-center gap-2 border border-white px-4 py-2 hover:bg-white hover:text-black transition-all"
-              >
-                <User size={18} />
-                Login
-              </Link>
+              {currentUser ? (
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-2 text-gray-300">
+                    <User size={18} />
+                    {currentUser.name}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 border border-red-500 text-red-500 px-4 py-2 hover:bg-red-500 hover:text-white transition-all"
+                  >
+                    <LogOut size={18} />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 border border-white px-4 py-2 hover:bg-white hover:text-black transition-all"
+                >
+                  <User size={18} />
+                  Login
+                </Link>
+              )}
             </nav>
 
             {/* Mobile Menu Button */}
@@ -80,14 +110,33 @@ export function Layout() {
                     {link.label}
                   </Link>
                 ))}
-                <Link
-                  to="/login"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-2 border border-white px-4 py-2 hover:bg-white hover:text-black transition-all w-fit"
-                >
-                  <User size={18} />
-                  Login
-                </Link>
+                {currentUser ? (
+                  <div className="flex flex-col gap-4 border-t border-gray-800 pt-4">
+                    <span className="flex items-center gap-2 text-gray-300 px-4">
+                      <User size={18} />
+                      {currentUser.name}
+                    </span>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center gap-2 border border-red-500 text-red-500 px-4 py-2 hover:bg-red-500 hover:text-white transition-all w-fit"
+                    >
+                      <LogOut size={18} />
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center gap-2 border border-white px-4 py-2 hover:bg-white hover:text-black transition-all w-fit"
+                  >
+                    <User size={18} />
+                    Login
+                  </Link>
+                )}
               </div>
             </nav>
           )}

@@ -1,20 +1,47 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { User, Lock, Mail, Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import { User, Lock, Mail, Eye, EyeOff, Loader2 } from "lucide-react";
+import { api } from "../../../lib/api";
 
 export function Login() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     name: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Mock authentication - in real app, this would call an API
-    alert(isLogin ? "Login successful!" : "Registration successful!");
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      const result = isLogin 
+        ? await api.login({ email: formData.email, password: formData.password })
+        : await api.register(formData);
+
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("user", JSON.stringify(result.user));
+        setMessage({ type: "success", text: isLogin ? "Login successful!" : "Registration successful!" });
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      } else {
+        setMessage({ type: "error", text: result.message || "An error occurred" });
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: "Could not connect to server" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +72,12 @@ export function Login() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {message.text && (
+              <div className={`p-4 border-2 ${message.type === 'success' ? 'border-green-600 bg-green-50 text-green-600' : 'border-red-600 bg-red-50 text-red-600'}`}>
+                {message.text}
+              </div>
+            )}
+
             {!isLogin && (
               <div>
                 <label className="block mb-2 text-sm">Full Name</label>
@@ -59,7 +92,8 @@ export function Login() {
                     value={formData.name}
                     onChange={handleChange}
                     required={!isLogin}
-                    className="w-full border-2 border-black pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                    disabled={loading}
+                    className="w-full border-2 border-black pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:bg-gray-100 disabled:cursor-not-allowed"
                     placeholder="John Doe"
                   />
                 </div>
@@ -79,7 +113,8 @@ export function Login() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full border-2 border-black pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                  disabled={loading}
+                  className="w-full border-2 border-black pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="you@example.com"
                 />
               </div>
@@ -98,7 +133,8 @@ export function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full border-2 border-black pl-10 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                  disabled={loading}
+                  className="w-full border-2 border-black pl-10 pr-12 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:bg-gray-100 disabled:cursor-not-allowed"
                   placeholder="••••••••"
                 />
                 <button
@@ -128,8 +164,10 @@ export function Login() {
 
             <button
               type="submit"
-              className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors"
+              disabled={loading}
+              className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:bg-gray-600 disabled:cursor-not-allowed"
             >
+              {loading && <Loader2 className="animate-spin" size={20} />}
               {isLogin ? "Sign In" : "Create Account"}
             </button>
           </form>

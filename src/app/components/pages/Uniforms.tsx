@@ -19,7 +19,7 @@ const mockUniforms: Uniform[] = [
     price: 25,
     sizes: ["S", "M", "L", "XL"],
     school: "All Schools",
-    image: "shirt",
+    image: "/uniforms/boys_shirt.png",
   },
   {
     id: 2,
@@ -28,61 +28,61 @@ const mockUniforms: Uniform[] = [
     price: 22,
     sizes: ["S", "M", "L", "XL"],
     school: "All Schools",
-    image: "shirt",
+    image: "/uniforms/boys_shirt.png", // Reusing for demo
   },
   {
     id: 3,
-    name: "Boys Navy Trousers",
+    name: "Classic School Blazer - Navy",
     category: "Boys",
-    price: 30,
+    price: 65,
     sizes: ["28", "30", "32", "34"],
     school: "All Schools",
-    image: "trousers",
+    image: "/uniforms/school_blazer.png",
   },
   {
     id: 4,
-    name: "Girls Navy Skirt",
+    name: "Girls Navy Pleated Skirt",
     category: "Girls",
     price: 28,
     sizes: ["S", "M", "L", "XL"],
     school: "All Schools",
-    image: "skirt",
+    image: "/uniforms/girls_skirt.png",
   },
   {
     id: 5,
-    name: "School Tie - Striped",
-    category: "Accessories",
-    price: 12,
-    sizes: ["One Size"],
+    name: "Sports Uniform Set - Pro",
+    category: "Sports",
+    price: 45,
+    sizes: ["S", "M", "L", "XL"],
     school: "St. Mary's School",
-    image: "tie",
+    image: "/uniforms/sports_uniform.png",
   },
   {
     id: 6,
-    name: "Sports T-Shirt - White",
+    name: "Sports T-Shirt - Performance",
     category: "Sports",
     price: 18,
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["S", "M", "L", "XL"],
     school: "All Schools",
-    image: "sports",
+    image: "/uniforms/sports_uniform.png", // Reusing for demo
   },
   {
     id: 7,
-    name: "Sports Shorts - Black",
-    category: "Sports",
-    price: 20,
-    sizes: ["S", "M", "L", "XL"],
+    name: "School Belt - Premium Leather",
+    category: "Accessories",
+    price: 15,
+    sizes: ["28-32", "32-36"],
     school: "All Schools",
-    image: "sports",
+    image: "/uniforms/school_blazer.png", // Using blazer as proxy for high-quality accessory feel
   },
   {
     id: 8,
-    name: "School Belt - Black",
+    name: "Striped School Tie",
     category: "Accessories",
-    price: 15,
-    sizes: ["28-32", "32-36", "36-40"],
+    price: 12,
+    sizes: ["One Size"],
     school: "All Schools",
-    image: "belt",
+    image: "/uniforms/boys_shirt.png", // Using shirt as background for tie
   },
 ];
 
@@ -106,31 +106,31 @@ export function Uniforms() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl mb-4">Uniforms Collection</h1>
+          <h1 className="text-4xl md:text-5xl mb-4 font-light tracking-tight">Uniforms Collection</h1>
           <p className="text-gray-600 text-lg">
             Browse our extensive collection of school uniforms and accessories
           </p>
         </div>
 
         {/* Filters */}
-        <div className="mb-8 bg-gray-50 border-2 border-black p-6">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="mb-12 bg-gray-50 border-2 border-black p-8">
+          <div className="flex items-center gap-2 mb-6">
             <Filter size={20} />
-            <h2 className="text-xl">Filter By</h2>
+            <h2 className="text-xl uppercase tracking-widest font-bold">Filter By</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Category Filter */}
             <div>
-              <label className="block mb-2">Category</label>
-              <div className="flex flex-wrap gap-2">
+              <label className="block mb-3 text-xs uppercase font-bold text-gray-500">Category</label>
+              <div className="flex flex-wrap gap-3">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-4 py-2 border-2 transition-all ${
+                    className={`px-6 py-2 border-2 transition-all duration-300 font-medium ${
                       selectedCategory === category
                         ? "bg-black text-white border-black"
-                        : "bg-white text-black border-black hover:bg-gray-100"
+                        : "bg-white text-black border-black hover:bg-black hover:text-white"
                     }`}
                   >
                     {category}
@@ -141,16 +141,16 @@ export function Uniforms() {
 
             {/* Size Filter */}
             <div>
-              <label className="block mb-2">Size</label>
-              <div className="flex flex-wrap gap-2">
+              <label className="block mb-3 text-xs uppercase font-bold text-gray-500">Size</label>
+              <div className="flex flex-wrap gap-3">
                 {sizes.map((size) => (
                   <button
                     key={size}
                     onClick={() => setSelectedSize(size)}
-                    className={`px-4 py-2 border-2 transition-all ${
+                    className={`px-6 py-2 border-2 transition-all duration-300 font-medium ${
                       selectedSize === size
                         ? "bg-black text-white border-black"
-                        : "bg-white text-black border-black hover:bg-gray-100"
+                        : "bg-white text-black border-black hover:bg-black hover:text-white"
                     }`}
                   >
                     {size}
@@ -162,43 +162,52 @@ export function Uniforms() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredUniforms.map((uniform) => (
             <div
               key={uniform.id}
-              className="border-2 border-black bg-white hover:shadow-xl transition-shadow group"
+              className="border-2 border-black bg-white group overflow-hidden"
             >
-              {/* Image Placeholder */}
-              <div className="aspect-square bg-gray-100 flex items-center justify-center border-b-2 border-black">
-                <div className="text-6xl text-gray-300">👔</div>
-              </div>
-
-              {/* Product Info */}
-              <div className="p-4">
-                <div className="mb-2">
-                  <span className="text-xs border border-black px-2 py-1">
-                    {uniform.category}
-                  </span>
-                </div>
-                <h3 className="text-lg mb-2 group-hover:underline">
-                  {uniform.name}
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">{uniform.school}</p>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl">${uniform.price}</span>
-                  <button className="p-2 hover:bg-gray-100 transition-colors">
+              {/* Product Image */}
+              <div className="aspect-square bg-gray-50 flex items-center justify-center border-b-2 border-black overflow-hidden relative">
+                <img 
+                  src={uniform.image} 
+                  alt={uniform.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute top-4 right-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                  <button className="bg-white border-2 border-black p-3 hover:bg-black hover:text-white transition-colors shadow-lg">
                     <Heart size={20} />
                   </button>
                 </div>
+              </div>
+
+              {/* Product Info */}
+              <div className="p-6">
+                <div className="mb-4">
+                  <span className="text-[10px] border-2 border-black px-3 py-1 uppercase font-black tracking-tighter">
+                    {uniform.category}
+                  </span>
+                </div>
+                <h3 className="text-xl mb-2 font-bold group-hover:underline transition-all">
+                  {uniform.name}
+                </h3>
+                <p className="text-sm text-gray-500 mb-4 flex items-center gap-2">
+                   <span className="w-2 h-2 bg-black rounded-full" /> {uniform.school}
+                </p>
+                
+                <div className="flex items-center justify-between mb-6">
+                  <span className="text-3xl font-black">${uniform.price}</span>
+                </div>
 
                 {/* Sizes */}
-                <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-2">Available Sizes:</p>
+                <div className="mb-6">
+                  <p className="text-[10px] uppercase font-bold text-gray-400 mb-2">Available Sizes</p>
                   <div className="flex flex-wrap gap-2">
                     {uniform.sizes.map((size) => (
                       <span
                         key={size}
-                        className="border border-gray-300 px-2 py-1 text-xs"
+                        className="border-2 border-gray-100 px-3 py-1 text-[10px] font-bold text-gray-400 group-hover:border-black group-hover:text-black transition-colors"
                       >
                         {size}
                       </span>
@@ -207,7 +216,7 @@ export function Uniforms() {
                 </div>
 
                 {/* Add to Cart */}
-                <button className="w-full bg-black text-white py-3 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+                <button className="w-full bg-black text-white py-4 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-xs">
                   <ShoppingCart size={18} />
                   Add to Cart
                 </button>
@@ -215,7 +224,6 @@ export function Uniforms() {
             </div>
           ))}
         </div>
-
         {/* No Results */}
         {filteredUniforms.length === 0 && (
           <div className="text-center py-20">

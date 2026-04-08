@@ -1,7 +1,9 @@
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { api } from "../../../lib/api";
 
 export function Contact() {
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -10,16 +12,26 @@ export function Contact() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for contacting us! We'll get back to you soon.");
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      subject: "",
-      message: "",
-    });
+    setSubmitting(true);
+    try {
+      const result = await api.submitContact(formData);
+      if (result.message) {
+        alert("Thank you for contacting us! We'll get back to you soon.");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+      }
+    } catch (error) {
+      alert("Failed to send message. Please try again later.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -116,7 +128,8 @@ export function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                      disabled={submitting}
+                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
                       placeholder="John Doe"
                     />
                   </div>
@@ -129,7 +142,8 @@ export function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                      disabled={submitting}
+                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
                       placeholder="you@example.com"
                     />
                   </div>
@@ -143,7 +157,8 @@ export function Contact() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                      disabled={submitting}
+                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
                       placeholder="+1 234 567 8900"
                     />
                   </div>
@@ -155,7 +170,8 @@ export function Contact() {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black bg-white"
+                      disabled={submitting}
+                      className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black bg-white disabled:opacity-50"
                     >
                       <option value="">Select a subject</option>
                       <option value="general">General Inquiry</option>
@@ -177,17 +193,23 @@ export function Contact() {
                     onChange={handleChange}
                     required
                     rows={8}
-                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black resize-none"
+                    disabled={submitting}
+                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black resize-none disabled:opacity-50"
                     placeholder="Tell us how we can help you..."
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                  disabled={submitting}
+                  className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:bg-gray-600"
                 >
-                  <Send size={20} />
-                  Send Message
+                  {submitting ? (
+                    <Loader2 className="animate-spin" size={20} />
+                  ) : (
+                    <Send size={20} />
+                  )}
+                  {submitting ? "Sending..." : "Send Message"}
                 </button>
               </form>
             </div>

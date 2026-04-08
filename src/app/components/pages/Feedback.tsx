@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Star, Send, MessageSquare } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Star, Send, MessageSquare, Loader2 } from "lucide-react";
+import { api } from "../../../lib/api";
 
 interface Feedback {
   id: number;
@@ -9,38 +10,10 @@ interface Feedback {
   date: string;
 }
 
-const mockFeedbacks: Feedback[] = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    rating: 5,
-    comment: "Excellent quality uniforms! My kids love wearing them, and they last through the entire school year.",
-    date: "March 15, 2026",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    rating: 5,
-    comment: "Great service and fast delivery. The sizing guide was very helpful.",
-    date: "March 10, 2026",
-  },
-  {
-    id: 3,
-    name: "Emma Williams",
-    rating: 4,
-    comment: "Good quality uniforms. Would love to see more color options for sports wear.",
-    date: "March 5, 2026",
-  },
-  {
-    id: 4,
-    name: "David Brown",
-    rating: 5,
-    comment: "Best uniform shop in town! Very professional staff and reasonable prices.",
-    date: "February 28, 2026",
-  },
-];
-
 export function Feedback() {
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -49,19 +22,46 @@ export function Feedback() {
   });
   const [hoveredRating, setHoveredRating] = useState(0);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    fetchFeedbacks();
+  }, []);
+
+  const fetchFeedbacks = async () => {
+    try {
+      const data = await api.getFeedbacks();
+      setFeedbacks(data);
+    } catch (error) {
+      console.error("Failed to fetch feedbacks:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.rating === 0) {
       alert("Please select a rating");
       return;
     }
-    alert("Thank you for your feedback!");
-    setFormData({
-      name: "",
-      email: "",
-      rating: 0,
-      comment: "",
-    });
+    
+    setSubmitting(true);
+    try {
+      const result = await api.submitFeedback(formData);
+      if (result.id) {
+        setFeedbacks([result, ...feedbacks]);
+        alert("Thank you for your feedback!");
+        setFormData({
+          name: "",
+          email: "",
+          rating: 0,
+          comment: "",
+        });
+      }
+    } catch (error) {
+      alert("Failed to submit feedback. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -123,7 +123,8 @@ export function Feedback() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                    disabled={submitting}
+                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
                     placeholder="John Doe"
                   />
                 </div>
@@ -136,7 +137,8 @@ export function Feedback() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black"
+                    disabled={submitting}
+                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -161,17 +163,23 @@ export function Feedback() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black resize-none"
+                    disabled={submitting}
+                    className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black resize-none disabled:opacity-50"
                     placeholder="Tell us about your experience..."
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                  disabled={submitting}
+                  className="w-full bg-black text-white py-4 hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 disabled:bg-gray-600"
                 >
-                  <Send size={20} />
-                  Submit Feedback
+                  {submitting ? (
+                    <Loader2 className="animate-spin" size={20} />
+                  ) : (
+                    <Send size={20} />
+                  )}
+                  {submitting ? "Submitting..." : "Submit Feedback"}
                 </button>
               </form>
             </div>
@@ -180,23 +188,35 @@ export function Feedback() {
           {/* Recent Feedbacks */}
           <div>
             <h2 className="text-2xl mb-6">Recent Customer Reviews</h2>
-            <div className="space-y-6">
-              {mockFeedbacks.map((feedback) => (
-                <div
-                  key={feedback.id}
-                  className="border-2 border-black p-6 bg-white hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="mb-1">{feedback.name}</h3>
-                      <p className="text-sm text-gray-600">{feedback.date}</p>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="animate-spin text-black" size={40} />
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {feedbacks.length > 0 ? (
+                  feedbacks.map((feedback) => (
+                    <div
+                      key={feedback.id}
+                      className="border-2 border-black p-6 bg-white hover:shadow-lg transition-shadow"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h3 className="mb-1">{feedback.name}</h3>
+                          <p className="text-sm text-gray-600">{feedback.date}</p>
+                        </div>
+                        {renderStars(feedback.rating)}
+                      </div>
+                      <p className="text-gray-700">{feedback.comment}</p>
                     </div>
-                    {renderStars(feedback.rating)}
-                  </div>
-                  <p className="text-gray-700">{feedback.comment}</p>
-                </div>
-              ))}
-            </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center py-8 border-2 border-dashed border-gray-300">
+                    No reviews yet. Be the first to leave one!
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
