@@ -15,6 +15,11 @@ const SECRET_KEY = process.env.SECRET_KEY || 'your-very-secret-key';
 app.use(cors());
 app.use(bodyParser.json());
 
+// Root route to show server status
+app.get('/', (req, res) => {
+    res.json({ message: 'Server is running', database: 'Connected' });
+});
+
 // Helper to read DB
 const readDB = async () => {
     try {
