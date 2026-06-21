@@ -1,6 +1,7 @@
 import { Outlet, Link, useLocation } from "react-router";
 import { Menu, X, Search as SearchIcon, User, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
+import { Toaster } from "sonner";
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -189,6 +190,7 @@ export function Layout() {
           </div>
         </div>
       </footer>
+      <Toaster richColors closeButton position="top-right" />
     </div>
   );
 }
