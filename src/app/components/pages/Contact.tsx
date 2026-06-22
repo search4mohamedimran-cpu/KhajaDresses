@@ -66,9 +66,9 @@ export function Contact() {
                 </div>
                 <h3 className="text-lg mb-2">Visit Us</h3>
                 <p className="text-gray-600 group-hover:text-gray-300">
-                  123 Fashion Street<br />
-                  City Center, Downtown<br />
-                  Postal Code: 12345
+                  257F, Opposite to Ananda & Ananda,<br />
+                  kamarajar Road,<br />
+                  Madurai - 9.
                 </p>
               </div>
 
@@ -79,9 +79,9 @@ export function Contact() {
                 </div>
                 <h3 className="text-lg mb-2">Call Us</h3>
                 <p className="text-gray-600 group-hover:text-gray-300">
-                  Main: +1 234 567 8900<br />
-                  Sales: +1 234 567 8901<br />
-                  Support: +1 234 567 8902
+                  Main: +91 1234567890<br />
+                  Sales: +91 1234567890<br />
+                  Support: +91 1234567890
                 </p>
               </div>
 
@@ -159,7 +159,7 @@ export function Contact() {
                       onChange={handleChange}
                       disabled={submitting}
                       className="w-full border-2 border-black px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black disabled:opacity-50"
-                      placeholder="+1 234 567 8900"
+                      placeholder="+91 1234567890"
                     />
                   </div>
 
@@ -219,7 +219,7 @@ export function Contact() {
               <div className="text-center">
                 <MapPin className="mx-auto mb-2 text-gray-400" size={48} />
                 <p className="text-gray-600">Map Location</p>
-                <p className="text-sm text-gray-500">123 Fashion Street, City Center</p>
+                <p className="text-sm text-gray-500">257F, Opposite to Ananda & Ananda, kamarajar Road, Madurai - 9.</p>
               </div>
             </div>
           </div>

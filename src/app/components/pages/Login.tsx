@@ -51,6 +51,25 @@ export function Login() {
     });
   };
 
+  const handleSocialLogin = (provider: string) => {
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+    setTimeout(() => {
+      const mockUser = {
+        name: `${provider} User`,
+        email: `${provider.toLowerCase()}user@example.com`
+      };
+      const mockToken = `mock-${provider.toLowerCase()}-token-${Date.now()}`;
+      localStorage.setItem("token", mockToken);
+      localStorage.setItem("user", JSON.stringify(mockUser));
+      setMessage({ type: "success", text: `Successfully logged in with ${provider}!` });
+      setLoading(false);
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    }, 1000);
+  };
+
   return (
     <div className="min-h-[calc(100vh-16rem)] bg-gray-50 py-12 px-4">
       <div className="container mx-auto max-w-md">
@@ -197,10 +216,20 @@ export function Login() {
 
           {/* Social Login */}
           <div className="mt-6 grid grid-cols-2 gap-4">
-            <button className="border-2 border-black py-3 hover:bg-gray-50 transition-colors">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSocialLogin("Google")}
+              className="border-2 border-black py-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            >
               Google
             </button>
-            <button className="border-2 border-black py-3 hover:bg-gray-50 transition-colors">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSocialLogin("Facebook")}
+              className="border-2 border-black py-3 hover:bg-gray-50 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+            >
               Facebook
             </button>
           </div>

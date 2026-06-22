@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ name: string } | null>(null);
+  const [cartCount, setCartCount] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -13,6 +14,34 @@ export function Layout() {
     if (userJson) {
       setCurrentUser(JSON.parse(userJson));
     }
+  }, [location]);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cartJson = localStorage.getItem("cart");
+      if (cartJson) {
+        try {
+          const cart = JSON.parse(cartJson);
+          if (Array.isArray(cart)) {
+            const count = cart.reduce((acc: number, item: any) => acc + (item.quantity || 0), 0);
+            setCartCount(count);
+            return;
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      setCartCount(0);
+    };
+
+    updateCartCount();
+    window.addEventListener("storage", updateCartCount);
+    window.addEventListener("cartUpdated", updateCartCount);
+
+    return () => {
+      window.removeEventListener("storage", updateCartCount);
+      window.removeEventListener("cartUpdated", updateCartCount);
+    };
   }, [location]);
 
   const handleLogout = () => {
@@ -27,6 +56,7 @@ export function Layout() {
     { path: "/search", label: "Search" },
     { path: "/feedback", label: "Feedback" },
     { path: "/contact", label: "Contact" },
+    { path: "/cart", label: `Cart (${cartCount})` },
   ];
 
   const isActive = (path: string) => {
@@ -180,8 +210,8 @@ export function Layout() {
               <h4 className="mb-4">Contact</h4>
               <div className="text-gray-400 flex flex-col gap-2">
                 <p>Email: info@kajadresses.com</p>
-                <p>Phone: +1 234 567 8900</p>
-                <p>Address: 123 Fashion Street, City</p>
+                <p>Phone: +91 1234567890</p>
+                <p>Address: 257F, Opposite to Ananda & Ananda, kamarajar Road, Madurai - 9.</p>
               </div>
             </div>
           </div>

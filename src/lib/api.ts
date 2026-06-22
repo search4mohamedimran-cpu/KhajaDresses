@@ -44,4 +44,19 @@ export const api = {
     });
     return response.json();
   },
+
+  // Orders
+  async placeOrder(orderData: any) {
+    const response = await fetch(`${API_BASE_URL}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData),
+    });
+    return response.json();
+  },
+
+  async getOrders(email: string) {
+    const response = await fetch(`${API_BASE_URL}/orders/${email}`);
+    return response.json();
+  },
 };

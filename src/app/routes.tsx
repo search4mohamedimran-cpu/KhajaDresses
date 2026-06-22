@@ -6,6 +6,7 @@ import { Uniforms } from "./components/pages/Uniforms";
 import { Search } from "./components/pages/Search";
 import { Feedback } from "./components/pages/Feedback";
 import { Contact } from "./components/pages/Contact";
+import { Cart } from "./components/pages/Cart";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "search", Component: Search },
       { path: "feedback", Component: Feedback },
       { path: "contact", Component: Contact },
+      { path: "cart", Component: Cart },
     ],
   },
 ]);

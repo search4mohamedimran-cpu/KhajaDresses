@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Search as SearchIcon, MapPin, Phone, Mail, CheckCircle, XCircle } from "lucide-react";
+import { useNavigate } from "react-router";
 
 interface School {
   id: number;
@@ -66,9 +67,64 @@ const mockSchools: School[] = [
     uniformsAvailable: true,
     uniformTypes: ["Boys Shirt", "Girls Shirt", "Trousers", "Skirt", "Blazer", "Tie", "Sports Wear"],
   },
+  {
+    id: 7,
+    name: "Kamarajar Matriculation Higher Secondary School",
+    location: "Kamarajar Road, Madurai",
+    phone: "+91 452 234 5678",
+    email: "info@kamarajarschool.edu.in",
+    uniformsAvailable: true,
+    uniformTypes: ["Boys Shirt", "Girls Shirt", "Trousers", "Skirt", "Tie", "Belts", "Sports Wear"],
+  },
+  {
+    id: 8,
+    name: "Mahatma Montessori Matriculation School",
+    location: "K.K. Nagar, Madurai",
+    phone: "+91 452 258 1234",
+    email: "contact@mahatmaschools.org",
+    uniformsAvailable: true,
+    uniformTypes: ["Boys Shirt", "Girls Shirt", "Trousers", "Skirt", "Sports Wear"],
+  },
+  {
+    id: 9,
+    name: "TVS Academy",
+    location: "Harveypatti, Madurai",
+    phone: "+91 452 248 4321",
+    email: "admissions@tvsacademy.in",
+    uniformsAvailable: true,
+    uniformTypes: ["Boys Shirt", "Girls Shirt", "Trousers", "Skirt", "Tie", "Sports Wear"],
+  },
+  {
+    id: 10,
+    name: "St. Joseph's Girls Higher Secondary School",
+    location: "Kamarajar Road, Madurai",
+    phone: "+91 452 262 9876",
+    email: "stjosephsghss@gmail.com",
+    uniformsAvailable: true,
+    uniformTypes: ["Girls Shirt", "Skirt", "Salwar Kameez Set", "Sports Wear"],
+  },
+  {
+    id: 11,
+    name: "O.C.P.M. Girls Higher Secondary School",
+    location: "Tallakulam, Madurai",
+    phone: "+91 452 253 4567",
+    email: "info@ocpmghss.com",
+    uniformsAvailable: true,
+    uniformTypes: ["Girls Shirt", "Skirt", "Salwar Kameez Set", "Sports Wear"],
+  },
+  {
+    id: 12,
+    name: "Vikas Vidyalaya Matriculation School",
+    location: "Pudur, Madurai",
+    phone: "+91 452 256 7890",
+    email: "admin@vikasschools.edu.in",
+    uniformsAvailable: false,
+    uniformTypes: [],
+  }
 ];
 
 export function Search() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedAvailability, setSelectedAvailability] = useState<"all" | "available" | "unavailable">("all");
 
@@ -215,16 +271,14 @@ export function Search() {
                 {/* Actions */}
                 <div className="flex flex-col gap-2 lg:min-w-[200px]">
                   {school.uniformsAvailable ? (
-                    <>
-                      <button className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors">
-                        View Uniforms
-                      </button>
-                      <button className="border-2 border-black px-6 py-3 hover:bg-gray-100 transition-colors">
-                        Contact School
-                      </button>
-                    </>
+                    <button 
+                      onClick={() => navigate("/uniforms", { state: { school: school.name } })}
+                      className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors text-center w-full"
+                    >
+                      View Uniforms
+                    </button>
                   ) : (
-                    <button className="border-2 border-gray-300 text-gray-400 px-6 py-3 cursor-not-allowed">
+                    <button className="border-2 border-gray-300 text-gray-400 px-6 py-3 cursor-not-allowed text-center w-full">
                       Not Available Yet
                     </button>
                   )}

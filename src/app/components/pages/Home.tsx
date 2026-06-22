@@ -72,16 +72,16 @@ export function Home() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl text-center mb-16 text-black">Featured Categories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { name: "Boys Uniforms", count: "250+ items" },
-              { name: "Girls Uniforms", count: "300+ items" },
-              { name: "Sports Wear", count: "150+ items" },
-              { name: "Accessories", count: "100+ items" },
+              { name: "Boys Uniforms", count: "250+ items", category: "Boys" },
+              { name: "Girls Uniforms", count: "300+ items", category: "Girls" },
+              { name: "Sports Wear", count: "150+ items", category: "Sports" },
             ].map((category) => (
               <Link
                 key={category.name}
                 to="/uniforms"
+                state={{ category: category.category }}
                 className="bg-white border-2 border-black p-8 hover:bg-black hover:text-white transition-all group"
               >
                 <h3 className="text-xl mb-2">{category.name}</h3>

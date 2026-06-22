@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { Filter, ShoppingCart, Heart } from "lucide-react";
 import { toast } from "sonner";
 
@@ -102,7 +103,7 @@ const mockUniforms: Uniform[] = [
       "26": 540,
       "28": 560
     },
-    school: "St. Mary's School",
+    school: "St. Mary's High School",
     image: "/uniforms/sports_uniform.png"
   },
   {
@@ -229,10 +230,11 @@ const mockUniforms: Uniform[] = [
     school: "All Schools",
     image: "/uniforms/school_blazer.png"
   },
+  // Reclassified Accessories into Boys & Girls
   {
     id: 12,
-    name: "School Belt - Premium Leather",
-    category: "Accessories",
+    name: "Boys School Belt - Premium Leather",
+    category: "Boys",
     price: 299,
     sizes: ["28-32", "32-36"],
     sizePrices: {
@@ -244,8 +246,21 @@ const mockUniforms: Uniform[] = [
   },
   {
     id: 13,
-    name: "Striped School Tie",
-    category: "Accessories",
+    name: "Girls School Belt - Premium Leather",
+    category: "Girls",
+    price: 299,
+    sizes: ["24-28", "28-32"],
+    sizePrices: {
+      "24-28": 299,
+      "28-32": 320
+    },
+    school: "All Schools",
+    image: "/uniforms/school_blazer.png"
+  },
+  {
+    id: 14,
+    name: "Boys Striped School Tie",
+    category: "Boys",
     price: 199,
     sizes: ["One Size"],
     sizePrices: {
@@ -253,16 +268,305 @@ const mockUniforms: Uniform[] = [
     },
     school: "All Schools",
     image: "/uniforms/boys_shirt.png"
+  },
+  {
+    id: 15,
+    name: "Girls Striped School Tie",
+    category: "Girls",
+    price: 199,
+    sizes: ["One Size"],
+    sizePrices: {
+      "One Size": 199
+    },
+    school: "All Schools",
+    image: "/uniforms/boys_shirt.png"
+  },
+  // New Variety Items (Boys)
+  {
+    id: 16,
+    name: "Boys Cotton Socks (Pack of 3)",
+    category: "Boys",
+    price: 180,
+    sizes: ["S", "M", "L"],
+    sizePrices: {
+      "S": 180,
+      "M": 190,
+      "L": 200
+    },
+    school: "All Schools",
+    image: "/uniforms/boys_shirt.png"
+  },
+  {
+    id: 17,
+    name: "Boys Formal Black Shoes",
+    category: "Boys",
+    price: 650,
+    sizes: ["3", "4", "5", "6", "7", "8"],
+    sizePrices: {
+      "3": 650,
+      "4": 670,
+      "5": 690,
+      "6": 710,
+      "7": 730,
+      "8": 750
+    },
+    school: "All Schools",
+    image: "/uniforms/school_blazer.png"
+  },
+  {
+    id: 18,
+    name: "Boys Woolen Winter Sweater",
+    category: "Boys",
+    price: 550,
+    sizes: ["30", "32", "34", "36", "38"],
+    sizePrices: {
+      "30": 550,
+      "32": 580,
+      "34": 610,
+      "36": 640,
+      "38": 670
+    },
+    school: "All Schools",
+    image: "/uniforms/school_blazer.png"
+  },
+  // New Variety Items (Girls)
+  {
+    id: 19,
+    name: "Girls Cotton Socks (Pack of 3)",
+    category: "Girls",
+    price: 180,
+    sizes: ["S", "M", "L"],
+    sizePrices: {
+      "S": 180,
+      "M": 190,
+      "L": 200
+    },
+    school: "All Schools",
+    image: "/uniforms/girls_skirt.png"
+  },
+  {
+    id: 20,
+    name: "Girls Formal Black Shoes",
+    category: "Girls",
+    price: 600,
+    sizes: ["2", "3", "4", "5", "6", "7"],
+    sizePrices: {
+      "2": 600,
+      "3": 620,
+      "4": 640,
+      "5": 660,
+      "6": 680,
+      "7": 700
+    },
+    school: "All Schools",
+    image: "/uniforms/girls_skirt.png"
+  },
+  {
+    id: 21,
+    name: "Girls Premium Winter Cardigan",
+    category: "Girls",
+    price: 580,
+    sizes: ["28", "30", "32", "34", "36"],
+    sizePrices: {
+      "28": 580,
+      "30": 610,
+      "32": 640,
+      "34": 670,
+      "36": 700
+    },
+    school: "All Schools",
+    image: "/uniforms/girls_skirt.png"
+  },
+  // New Variety Items (Sports)
+  {
+    id: 22,
+    name: "Sports Track Pants - Premium",
+    category: "Sports",
+    price: 399,
+    sizes: ["24", "26", "28", "30", "32", "34"],
+    sizePrices: {
+      "24": 399,
+      "26": 420,
+      "28": 440,
+      "30": 460,
+      "32": 480,
+      "34": 500
+    },
+    school: "All Schools",
+    image: "/uniforms/sports_uniform.png"
+  },
+  {
+    id: 23,
+    name: "Sports Windbreaker Jacket",
+    category: "Sports",
+    price: 799,
+    sizes: ["S", "M", "L", "XL"],
+    sizePrices: {
+      "S": 799,
+      "M": 849,
+      "L": 899,
+      "XL": 949
+    },
+    school: "All Schools",
+    image: "/uniforms/sports_uniform.png"
+  },
+  {
+    id: 24,
+    name: "Sports Socks - Cushioned (Pair)",
+    category: "Sports",
+    price: 80,
+    sizes: ["One Size"],
+    sizePrices: {
+      "One Size": 80
+    },
+    school: "All Schools",
+    image: "/uniforms/sports_uniform.png"
+  },
+  {
+    id: 25,
+    name: "House T-Shirt - Red / Blue / Green / Yellow",
+    category: "Sports",
+    price: 199,
+    sizes: ["22", "24", "26", "28", "30", "32", "34"],
+    sizePrices: {
+      "22": 199,
+      "24": 210,
+      "26": 220,
+      "28": 230,
+      "30": 240,
+      "32": 250,
+      "34": 260
+    },
+    school: "All Schools",
+    image: "/uniforms/sports_uniform.png"
+  },
+  // Specific School Specific Uniforms
+  {
+    id: 26,
+    name: "Kamarajar School Special Blazer",
+    category: "Boys",
+    price: 1299,
+    sizes: ["30", "32", "34", "36"],
+    sizePrices: {
+      "30": 1299,
+      "32": 1349,
+      "34": 1399,
+      "36": 1449
+    },
+    school: "Kamarajar Matriculation Higher Secondary School",
+    image: "/uniforms/school_blazer.png"
+  },
+  {
+    id: 27,
+    name: "Mahatma School Sports Uniform Set",
+    category: "Sports",
+    price: 520,
+    sizes: ["22", "24", "26", "28", "30"],
+    sizePrices: {
+      "22": 520,
+      "24": 540,
+      "26": 560,
+      "28": 580,
+      "30": 600
+    },
+    school: "Mahatma Montessori Matriculation School",
+    image: "/uniforms/sports_uniform.png"
+  },
+  {
+    id: 28,
+    name: "TVS Academy Uniform Tie",
+    category: "Boys",
+    price: 220,
+    sizes: ["One Size"],
+    sizePrices: {
+      "One Size": 220
+    },
+    school: "TVS Academy",
+    image: "/uniforms/boys_shirt.png"
+  },
+  {
+    id: 29,
+    name: "St. Joseph's Premium Salwar Kameez",
+    category: "Girls",
+    price: 850,
+    sizes: ["26", "28", "30", "32", "34", "36", "38"],
+    sizePrices: {
+      "26": 850,
+      "28": 890,
+      "30": 930,
+      "32": 970,
+      "34": 1010,
+      "36": 1050,
+      "38": 1090
+    },
+    school: "St. Joseph's Girls Higher Secondary School",
+    image: "/uniforms/girls_skirt.png"
+  },
+  {
+    id: 30,
+    name: "O.C.P.M. School Salwar Set",
+    category: "Girls",
+    price: 850,
+    sizes: ["26", "28", "30", "32", "34", "36", "38"],
+    sizePrices: {
+      "26": 850,
+      "28": 890,
+      "30": 930,
+      "32": 970,
+      "34": 1010,
+      "36": 1050,
+      "38": 1090
+    },
+    school: "O.C.P.M. Girls Higher Secondary School",
+    image: "/uniforms/girls_skirt.png"
   }
 ];
 
+const schools = [
+  "All Schools",
+  "St. Mary's High School",
+  "Greenwood Academy",
+  "Riverside Public School",
+  "Oakwood International",
+  "Sunrise Elementary",
+  "Royal Grammar School",
+  "Kamarajar Matriculation Higher Secondary School",
+  "Mahatma Montessori Matriculation School",
+  "TVS Academy",
+  "St. Joseph's Girls Higher Secondary School",
+  "O.C.P.M. Girls Higher Secondary School",
+  "Vikas Vidyalaya Matriculation School"
+];
+
 export function Uniforms() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    return location.state?.category || "All";
+  });
+  
+  const [selectedSchool, setSelectedSchool] = useState(() => {
+    return location.state?.school || "All Schools";
+  });
+
   const [selectedSize, setSelectedSize] = useState("All");
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
   const [selectedProductSizes, setSelectedProductSizes] = useState<Record<number, string>>({});
 
-  const categories = ["All", "Boys", "Girls", "Sports", "Accessories"];
+  const categories = ["All", "Boys", "Girls", "Sports"];
+
+  // Sync category and school filters with route navigation state
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.category !== undefined) {
+        setSelectedCategory(location.state.category);
+      }
+      if (location.state.school !== undefined) {
+        setSelectedSchool(location.state.school);
+      }
+    }
+  }, [location.state]);
 
   // Dynamically compute unique sizes from the products catalog
   const sizes = [
@@ -293,10 +597,48 @@ export function Uniforms() {
     return selectedProductSizes[uniform.id] || uniform.sizes[0];
   };
 
-  const handleAddToCart = (uniform: Uniform) => {
+  const handleAddToCart = (uniform: Uniform, silent = false) => {
     const size = getSelectedSize(uniform);
     const price = uniform.sizePrices?.[size] ?? uniform.price;
-    toast.success(`${uniform.name} (Size: ${size}, Price: ₹${price}) added to cart!`);
+
+    const cartJson = localStorage.getItem("cart");
+    let cart = [];
+    if (cartJson) {
+      try {
+        cart = JSON.parse(cartJson);
+      } catch (e) {
+        cart = [];
+      }
+    }
+    if (!Array.isArray(cart)) cart = [];
+
+    const existingItemIndex = cart.findIndex((item: any) => item.id === uniform.id && item.size === size);
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      cart.push({
+        id: uniform.id,
+        name: uniform.name,
+        category: uniform.category,
+        price,
+        size,
+        quantity: 1,
+        school: uniform.school,
+        image: uniform.image
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    if (!silent) {
+      toast.success(`${uniform.name} (Size: ${size}) added to cart!`);
+    }
+  };
+
+  const handleBuyNow = (uniform: Uniform) => {
+    handleAddToCart(uniform, true);
+    navigate("/cart?checkout=true");
   };
 
   const filteredUniforms = mockUniforms.filter((uniform) => {
@@ -304,7 +646,15 @@ export function Uniforms() {
       selectedCategory === "All" || uniform.category === selectedCategory;
     const sizeMatch =
       selectedSize === "All" || uniform.sizes.includes(selectedSize);
-    return categoryMatch && sizeMatch;
+    
+    // Items match if selectedSchool is "All Schools", or if the uniform is general ("All Schools"), 
+    // or if the uniform is designated specifically for the selected school.
+    const schoolMatch =
+      selectedSchool === "All Schools" ||
+      uniform.school === "All Schools" ||
+      uniform.school === selectedSchool;
+
+    return categoryMatch && sizeMatch && schoolMatch;
   });
 
   return (
@@ -324,7 +674,7 @@ export function Uniforms() {
             <Filter size={20} />
             <h2 className="text-xl uppercase tracking-widest font-bold">Filter By</h2>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Category Filter */}
             <div>
               <label className="block mb-3 text-xs uppercase font-bold text-gray-500">Category</label>
@@ -364,6 +714,22 @@ export function Uniforms() {
                 ))}
               </div>
             </div>
+
+            {/* School Filter */}
+            <div>
+              <label className="block mb-3 text-xs uppercase font-bold text-gray-500">School / Institution</label>
+              <select
+                value={selectedSchool}
+                onChange={(e) => setSelectedSchool(e.target.value)}
+                className="w-full border-2 border-black p-3 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-black font-semibold"
+              >
+                {schools.map((schoolName) => (
+                  <option key={schoolName} value={schoolName}>
+                    {schoolName}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -386,14 +752,20 @@ export function Uniforms() {
                       alt={uniform.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-4 right-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    {/* Favorite Button (Visible on mobile/desktop with fixed styling) */}
+                    <div className="absolute top-4 right-4 z-10">
                       <button 
                         onClick={() => toggleLike(uniform.id)}
-                        className={`bg-white border-2 border-black p-3 transition-colors shadow-lg ${
-                          likedItems.has(uniform.id) ? "bg-black text-white" : "hover:bg-black hover:text-white"
+                        className={`border-2 border-black p-3 transition-colors shadow-lg ${
+                          likedItems.has(uniform.id) 
+                            ? "bg-black text-white" 
+                            : "bg-white text-black hover:bg-black hover:text-white"
                         }`}
                       >
-                        <Heart size={20} fill={likedItems.has(uniform.id) ? "currentColor" : "none"} />
+                        <Heart 
+                          size={20} 
+                          className={likedItems.has(uniform.id) ? "text-red-500 fill-red-500" : ""}
+                        />
                       </button>
                     </div>
                   </div>
@@ -444,14 +816,19 @@ export function Uniforms() {
                   </div>
                 </div>
 
-                <div className="p-6 pt-0">
-                  {/* Add to Cart */}
+                <div className="p-6 pt-0 flex flex-col gap-2">
                   <button 
                     onClick={() => handleAddToCart(uniform)}
-                    className="w-full bg-black text-white py-4 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-3 font-bold uppercase tracking-widest text-xs"
+                    className="w-full bg-white text-black py-3 hover:bg-black hover:text-white border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px]"
                   >
-                    <ShoppingCart size={18} />
+                    <ShoppingCart size={14} />
                     Add to Cart
+                  </button>
+                  <button 
+                    onClick={() => handleBuyNow(uniform)}
+                    className="w-full bg-black text-white py-3 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px]"
+                  >
+                    Buy Now
                   </button>
                 </div>
               </div>
