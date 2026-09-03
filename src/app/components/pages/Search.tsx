@@ -272,8 +272,11 @@ export function Search() {
                 <div className="flex flex-col gap-2 lg:min-w-[200px]">
                   {school.uniformsAvailable ? (
                     <button 
-                      onClick={() => navigate("/uniforms", { state: { school: school.name } })}
-                      className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition-colors text-center w-full"
+                      onClick={() => {
+                        const el = document.getElementById("uniforms");
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="bg-black text-white px-6 py-3 font-black uppercase text-xs hover:bg-yellow-400 hover:text-black transition-colors text-center w-full border-2 border-black"
                     >
                       View Uniforms
                     </button>

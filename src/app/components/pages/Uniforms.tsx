@@ -638,7 +638,7 @@ export function Uniforms() {
 
   const handleBuyNow = (uniform: Uniform) => {
     handleAddToCart(uniform, true);
-    navigate("/cart?checkout=true");
+    window.dispatchEvent(new Event("openCartDrawer"));
   };
 
   const filteredUniforms = mockUniforms.filter((uniform) => {
