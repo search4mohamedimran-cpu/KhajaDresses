@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { Filter, ShoppingCart, Heart } from "lucide-react";
+import { Filter, ShoppingCart, Heart, PackageCheck } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "../../../lib/api";
 
 interface Uniform {
   id: number;
@@ -12,6 +13,7 @@ interface Uniform {
   sizePrices?: Record<string, number>;
   school: string;
   image: string;
+  stock?: number;
 }
 
 const mockUniforms: Uniform[] = [
@@ -550,11 +552,31 @@ export function Uniforms() {
     return location.state?.school || "All Schools";
   });
 
+  const [uniformsList, setUniformsList] = useState<Uniform[]>(mockUniforms);
   const [selectedSize, setSelectedSize] = useState("All");
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
   const [selectedProductSizes, setSelectedProductSizes] = useState<Record<number, string>>({});
 
   const categories = ["All", "Boys", "Girls", "Sports"];
+
+  const loadUniforms = async () => {
+    try {
+      const data = await api.getUniforms();
+      if (Array.isArray(data) && data.length > 0) {
+        setUniformsList(data);
+      }
+    } catch (e) {
+      console.warn("Could not fetch uniforms from DB API, using fallback data", e);
+    }
+  };
+
+  useEffect(() => {
+    loadUniforms();
+    window.addEventListener("uniformsUpdated", loadUniforms);
+    return () => {
+      window.removeEventListener("uniformsUpdated", loadUniforms);
+    };
+  }, []);
 
   // Sync category and school filters with route navigation state
   useEffect(() => {
@@ -571,7 +593,7 @@ export function Uniforms() {
   // Dynamically compute unique sizes from the products catalog
   const sizes = [
     "All",
-    ...Array.from(new Set(mockUniforms.flatMap((u) => u.sizes))).sort((a, b) => {
+    ...Array.from(new Set(uniformsList.flatMap((u) => u.sizes))).sort((a, b) => {
       const numA = parseInt(a);
       const numB = parseInt(b);
       if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
@@ -598,6 +620,12 @@ export function Uniforms() {
   };
 
   const handleAddToCart = (uniform: Uniform, silent = false) => {
+    const availableStock = uniform.stock ?? 100;
+    if (availableStock <= 0) {
+      toast.error(`Sorry, ${uniform.name} is currently out of stock!`);
+      return;
+    }
+
     const size = getSelectedSize(uniform);
     const price = uniform.sizePrices?.[size] ?? uniform.price;
 
@@ -614,6 +642,10 @@ export function Uniforms() {
 
     const existingItemIndex = cart.findIndex((item: any) => item.id === uniform.id && item.size === size);
     if (existingItemIndex > -1) {
+      if (cart[existingItemIndex].quantity + 1 > availableStock) {
+        toast.error(`Cannot add more. Maximum available stock is ${availableStock}.`);
+        return;
+      }
       cart[existingItemIndex].quantity += 1;
     } else {
       cart.push({
@@ -637,12 +669,18 @@ export function Uniforms() {
   };
 
   const handleBuyNow = (uniform: Uniform) => {
+    const availableStock = uniform.stock ?? 100;
+    if (availableStock <= 0) {
+      toast.error(`Sorry, ${uniform.name} is out of stock!`);
+      return;
+    }
     handleAddToCart(uniform, true);
     window.dispatchEvent(new Event("openCartDrawer"));
   };
 
-  const filteredUniforms = mockUniforms.filter((uniform) => {
+  const filteredUniforms = uniformsList.filter((uniform) => {
     const categoryMatch =
+
       selectedCategory === "All" || uniform.category === selectedCategory;
     const sizeMatch =
       selectedSize === "All" || uniform.sizes.includes(selectedSize);
@@ -784,11 +822,27 @@ export function Uniforms() {
                        <span className="w-2 h-2 bg-black rounded-full" /> {uniform.school}
                     </p>
                     
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex flex-col">
                         <span className="text-3xl font-black">₹{currentPrice}</span>
                         <span className="text-xs text-gray-400 font-semibold">Size: {currentSize} price</span>
                       </div>
+                    </div>
+
+                    {/* Stock Display below each uniform in catalog */}
+                    <div className="mb-6 p-2.5 bg-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-between">
+                      <span className="text-[10px] uppercase font-bold text-gray-500 flex items-center gap-1">
+                        <PackageCheck size={14} className="text-black" /> Stock Status:
+                      </span>
+                      <span className={`text-xs font-black px-2 py-0.5 border ${
+                        (uniform.stock ?? 100) > 10
+                          ? "bg-emerald-100 text-emerald-800 border-emerald-400"
+                          : (uniform.stock ?? 100) > 0
+                            ? "bg-amber-100 text-amber-800 border-amber-400 animate-pulse"
+                            : "bg-red-100 text-red-700 border-red-400 uppercase tracking-wider"
+                      }`}>
+                        {(uniform.stock ?? 100) > 0 ? `${uniform.stock ?? 100} units left` : "Out of Stock"}
+                      </span>
                     </div>
 
                     {/* Sizes Selector */}
@@ -819,16 +873,18 @@ export function Uniforms() {
                 <div className="p-6 pt-0 flex flex-col gap-2">
                   <button 
                     onClick={() => handleAddToCart(uniform)}
-                    className="w-full bg-white text-black py-3 hover:bg-black hover:text-white border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px]"
+                    disabled={(uniform.stock ?? 100) <= 0}
+                    className="w-full bg-white text-black py-3 hover:bg-black hover:text-white border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed"
                   >
                     <ShoppingCart size={14} />
-                    Add to Cart
+                    {(uniform.stock ?? 100) > 0 ? "Add to Cart" : "Out of Stock"}
                   </button>
                   <button 
                     onClick={() => handleBuyNow(uniform)}
-                    className="w-full bg-black text-white py-3 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px]"
+                    disabled={(uniform.stock ?? 100) <= 0}
+                    className="w-full bg-black text-white py-3 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed"
                   >
-                    Buy Now
+                    {(uniform.stock ?? 100) > 0 ? "Buy Now" : "Unavailable"}
                   </button>
                 </div>
               </div>

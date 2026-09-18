@@ -1,9 +1,10 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { Menu, X, ShoppingBag, User, LogOut, Sparkles } from "lucide-react";
+import { Menu, X, ShoppingBag, User, LogOut, Sparkles, Package } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Toaster } from "sonner";
 import { AuthModal } from "./modals/AuthModal";
 import { CartDrawer } from "./drawers/CartDrawer";
+import { OrdersModal } from "./modals/OrdersModal";
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,8 +12,10 @@ export function Layout() {
   const [cartCount, setCartCount] = useState(0);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
+  const [isOrdersModalOpen, setIsOrdersModalOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
 
   const loadUser = () => {
     const userJson = localStorage.getItem("user");
@@ -50,6 +53,7 @@ export function Layout() {
 
     const handleOpenCart = () => setIsCartDrawerOpen(true);
     const handleOpenAuth = () => setIsAuthModalOpen(true);
+    const handleOpenOrders = () => setIsOrdersModalOpen(true);
 
     window.addEventListener("storage", loadUser);
     window.addEventListener("userUpdated", loadUser);
@@ -57,6 +61,7 @@ export function Layout() {
     window.addEventListener("cartUpdated", updateCartCount);
     window.addEventListener("openCartDrawer", handleOpenCart);
     window.addEventListener("openAuthModal", handleOpenAuth);
+    window.addEventListener("openOrdersModal", handleOpenOrders);
 
     return () => {
       window.removeEventListener("storage", loadUser);
@@ -65,6 +70,7 @@ export function Layout() {
       window.removeEventListener("cartUpdated", updateCartCount);
       window.removeEventListener("openCartDrawer", handleOpenCart);
       window.removeEventListener("openAuthModal", handleOpenAuth);
+      window.removeEventListener("openOrdersModal", handleOpenOrders);
     };
   }, [location]);
 
@@ -159,6 +165,13 @@ export function Layout() {
               {/* User Profile or Auth Modal Trigger */}
               {currentUser ? (
                 <div className="flex items-center gap-3 border-l border-gray-800 pl-4">
+                  <button
+                    onClick={() => setIsOrdersModalOpen(true)}
+                    className="bg-yellow-400 text-black px-3 py-1.5 border-2 border-yellow-400 hover:bg-black hover:text-white hover:border-white transition-all flex items-center gap-1.5 font-black text-xs uppercase shadow-sm"
+                  >
+                    <Package size={14} />
+                    My Orders
+                  </button>
                   <span className="flex items-center gap-1.5 text-xs text-gray-300 font-semibold">
                     <User size={16} className="text-yellow-400" />
                     {currentUser.name}
@@ -239,22 +252,33 @@ export function Layout() {
                 Contact Us
               </button>
 
-              <div className="pt-3 border-t border-gray-800 flex items-center justify-between">
+              <div className="pt-3 border-t border-gray-800 flex flex-col gap-3">
                 {currentUser ? (
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-xs text-yellow-400 font-bold flex items-center gap-2">
-                      <User size={16} /> {currentUser.name}
-                    </span>
+                  <>
                     <button
                       onClick={() => {
-                        handleLogout();
                         setIsMenuOpen(false);
+                        setIsOrdersModalOpen(true);
                       }}
-                      className="px-3 py-1.5 text-xs text-red-500 border border-red-500 uppercase font-bold"
+                      className="w-full bg-yellow-400 text-black py-2 text-xs font-black uppercase flex items-center justify-center gap-2 border-2 border-yellow-400"
                     >
-                      Logout
+                      <Package size={16} /> My Orders
                     </button>
-                  </div>
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-xs text-yellow-400 font-bold flex items-center gap-2">
+                        <User size={16} /> {currentUser.name}
+                      </span>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="px-3 py-1.5 text-xs text-red-500 border border-red-500 uppercase font-bold"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  </>
                 ) : (
                   <button
                     onClick={() => {
@@ -322,6 +346,7 @@ export function Layout() {
 
       {/* Global Dynamic Overlays */}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <OrdersModal isOpen={isOrdersModalOpen} onClose={() => setIsOrdersModalOpen(false)} />
       <CartDrawer
         isOpen={isCartDrawerOpen}
         onClose={() => setIsCartDrawerOpen(false)}

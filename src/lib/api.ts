@@ -45,6 +45,12 @@ export const api = {
     return response.json();
   },
 
+  // Uniforms & Stock
+  async getUniforms() {
+    const response = await fetch(`${API_BASE_URL}/uniforms`);
+    return response.json();
+  },
+
   // Orders
   async placeOrder(orderData: any) {
     const response = await fetch(`${API_BASE_URL}/orders`, {
@@ -60,3 +66,4 @@ export const api = {
     return response.json();
   },
 };
+

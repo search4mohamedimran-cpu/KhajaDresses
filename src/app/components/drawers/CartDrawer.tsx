@@ -128,6 +128,7 @@ export function CartDrawer({ isOpen, onClose, onOpenAuth }: CartDrawerProps) {
         localStorage.removeItem("cart");
         setCartItems([]);
         window.dispatchEvent(new Event("cartUpdated"));
+        window.dispatchEvent(new Event("uniformsUpdated"));
         toast.success("Order recorded successfully in MongoDB!");
       } else {
         toast.error(result.message || "Failed to place order.");
@@ -144,6 +145,7 @@ export function CartDrawer({ isOpen, onClose, onOpenAuth }: CartDrawerProps) {
       localStorage.removeItem("cart");
       setCartItems([]);
       window.dispatchEvent(new Event("cartUpdated"));
+      window.dispatchEvent(new Event("uniformsUpdated"));
       toast.success("Order confirmed successfully!");
     } finally {
       setLoading(false);
