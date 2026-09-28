@@ -37,6 +37,11 @@ const UniformSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 100
+    },
+    sizeStock: {
+        type: Map,
+        of: Number,
+        default: {}
     }
 }, {
     timestamps: true

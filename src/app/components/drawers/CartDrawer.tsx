@@ -89,6 +89,59 @@ export function CartDrawer({ isOpen, onClose, onOpenAuth }: CartDrawerProps) {
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
+  const saveLocalOrderAndDeductStock = (orderPayload: any, orderId: string) => {
+    try {
+      const existingOrdersJson = localStorage.getItem("local_orders");
+      let existingOrders = [];
+      if (existingOrdersJson) {
+        try {
+          existingOrders = JSON.parse(existingOrdersJson);
+          if (!Array.isArray(existingOrders)) existingOrders = [];
+        } catch (e) {
+          existingOrders = [];
+        }
+      }
+      const newOrder = {
+        _id: orderId,
+        user: orderPayload.user,
+        items: orderPayload.items,
+        totalAmount: orderPayload.totalAmount,
+        shippingAddress: orderPayload.shippingAddress,
+        phone: orderPayload.phone,
+        paymentMethod: orderPayload.paymentMethod,
+        status: "Pending",
+        createdAt: new Date().toISOString(),
+      };
+      if (!existingOrders.some((o: any) => o._id === orderId)) {
+        existingOrders.unshift(newOrder);
+      }
+      localStorage.setItem("local_orders", JSON.stringify(existingOrders));
+    } catch (e) {
+      console.error("Error saving local order:", e);
+    }
+
+    try {
+      const localStockJson = localStorage.getItem("local_stock");
+      let localStock: Record<number, number> = {};
+      if (localStockJson) {
+        try {
+          localStock = JSON.parse(localStockJson);
+        } catch (e) {
+          localStock = {};
+        }
+      }
+
+      orderPayload.items.forEach((item: any) => {
+        const currentStock = localStock[item.id] ?? 100;
+        localStock[item.id] = Math.max(0, currentStock - item.quantity);
+      });
+
+      localStorage.setItem("local_stock", JSON.stringify(localStock));
+    } catch (e) {
+      console.error("Error updating local stock:", e);
+    }
+  };
+
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentUser) {
@@ -106,19 +159,20 @@ export function CartDrawer({ isOpen, onClose, onOpenAuth }: CartDrawerProps) {
     }
 
     setLoading(true);
-    try {
-      const orderPayload = {
-        user: { name: currentUser.name, email: currentUser.email },
-        items: cartItems,
-        totalAmount: subtotal,
-        shippingAddress,
-        phone,
-        paymentMethod,
-      };
+    const orderPayload = {
+      user: { name: currentUser.name, email: currentUser.email },
+      items: cartItems,
+      totalAmount: subtotal,
+      shippingAddress,
+      phone,
+      paymentMethod,
+    };
 
+    try {
       const result = await api.placeOrder(orderPayload);
       if (result.orderId || result.message?.includes("successfully")) {
         const orderId = result.orderId || `ORD-${Date.now().toString().slice(-6)}`;
+        saveLocalOrderAndDeductStock(orderPayload, orderId);
         setOrderSuccess({
           orderId,
           total: subtotal,
@@ -129,13 +183,15 @@ export function CartDrawer({ isOpen, onClose, onOpenAuth }: CartDrawerProps) {
         setCartItems([]);
         window.dispatchEvent(new Event("cartUpdated"));
         window.dispatchEvent(new Event("uniformsUpdated"));
-        toast.success("Order recorded successfully in MongoDB!");
+        window.dispatchEvent(new Event("ordersUpdated"));
+        toast.success("Order placed and recorded successfully!");
       } else {
         toast.error(result.message || "Failed to place order.");
       }
     } catch (error) {
-      console.warn("Backend offline, completing order locally", error);
+      console.warn("Backend API offline or error, completing order locally:", error);
       const mockId = `ORD-LOCAL-${Date.now().toString().slice(-6)}`;
+      saveLocalOrderAndDeductStock(orderPayload, mockId);
       setOrderSuccess({
         orderId: mockId,
         total: subtotal,
@@ -146,7 +202,8 @@ export function CartDrawer({ isOpen, onClose, onOpenAuth }: CartDrawerProps) {
       setCartItems([]);
       window.dispatchEvent(new Event("cartUpdated"));
       window.dispatchEvent(new Event("uniformsUpdated"));
-      toast.success("Order confirmed successfully!");
+      window.dispatchEvent(new Event("ordersUpdated"));
+      toast.success("Order confirmed and saved successfully!");
     } finally {
       setLoading(false);
     }

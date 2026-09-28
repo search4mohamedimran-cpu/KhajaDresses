@@ -135,6 +135,8 @@ export function Cart() {
         localStorage.removeItem("cart");
         setCartItems([]);
         window.dispatchEvent(new Event("cartUpdated"));
+        window.dispatchEvent(new Event("uniformsUpdated"));
+        window.dispatchEvent(new Event("ordersUpdated"));
       } else {
         toast.error(result.message || "Checkout failed. Please try again.");
       }

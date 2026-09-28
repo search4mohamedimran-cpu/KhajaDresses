@@ -38,9 +38,7 @@ export function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
   const [loading, setLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
+  const loadOrdersForCurrentUser = () => {
     const userJson = localStorage.getItem("user");
     if (userJson) {
       try {
@@ -56,21 +54,53 @@ export function OrdersModal({ isOpen, onClose }: OrdersModalProps) {
       setCurrentUser(null);
       setOrders([]);
     }
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    loadOrdersForCurrentUser();
+    window.addEventListener("ordersUpdated", loadOrdersForCurrentUser);
+    return () => {
+      window.removeEventListener("ordersUpdated", loadOrdersForCurrentUser);
+    };
   }, [isOpen]);
 
   const fetchUserOrders = async (email: string) => {
     setLoading(true);
+    let combinedOrders: Order[] = [];
+
+    // 1. Load local orders saved in localStorage
     try {
-      const data = await api.getOrders(email);
-      if (Array.isArray(data)) {
-        setOrders(data);
-      } else {
-        setOrders([]);
+      const localOrdersJson = localStorage.getItem("local_orders");
+      if (localOrdersJson) {
+        const parsed = JSON.parse(localOrdersJson);
+        if (Array.isArray(parsed)) {
+          combinedOrders = parsed.filter(
+            (o: Order) => o.user?.email?.toLowerCase() === email.toLowerCase()
+          );
+        }
+      }
+    } catch (e) {
+      console.error("Error loading local orders:", e);
+    }
+
+    // 2. Fetch remote orders from backend database API
+    try {
+      const serverOrders = await api.getOrders(email);
+      if (Array.isArray(serverOrders)) {
+        const serverOrderIds = new Set(serverOrders.map((o: Order) => o._id));
+        const uniqueLocalOrders = combinedOrders.filter((o) => !serverOrderIds.has(o._id));
+        combinedOrders = [...serverOrders, ...uniqueLocalOrders];
       }
     } catch (error) {
-      console.warn("Could not fetch orders from server:", error);
-      setOrders([]);
+      console.warn("Could not fetch orders from server API, utilizing local orders history:", error);
     } finally {
+      // Sort orders by creation timestamp descending
+      combinedOrders.sort(
+        (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      );
+      setOrders(combinedOrders);
       setLoading(false);
     }
   };

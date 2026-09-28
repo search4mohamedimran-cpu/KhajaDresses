@@ -7,6 +7,7 @@ import { Feedback } from "./components/pages/Feedback";
 import { Contact } from "./components/pages/Contact";
 import { Cart } from "./components/pages/Cart";
 import { Login } from "./components/pages/Login";
+import { AdminDashboard } from "./components/pages/AdminDashboard";
 
 function SinglePageWrapper() {
   const context = useOutletContext<{ openAuth: () => void; openCart: () => void }>() || {
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
       { path: "contact", Component: Contact },
       { path: "cart", Component: Cart },
       { path: "login", Component: Login },
+      { path: "admin", Component: AdminDashboard },
       { path: "*", Component: SinglePageWrapper },
     ],
   },

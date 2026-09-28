@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { Menu, X, ShoppingBag, User, LogOut, Sparkles, Package } from "lucide-react";
+import { Menu, X, ShoppingBag, User, LogOut, Sparkles, Package, ShieldCheck } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Toaster } from "sonner";
 import { AuthModal } from "./modals/AuthModal";
@@ -8,7 +8,7 @@ import { OrdersModal } from "./modals/OrdersModal";
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{ name: string; email?: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{ name: string; email?: string; role?: string } | null>(null);
   const [cartCount, setCartCount] = useState(0);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
@@ -79,6 +79,7 @@ export function Layout() {
     localStorage.removeItem("user");
     setCurrentUser(null);
     window.dispatchEvent(new Event("userUpdated"));
+    navigate("/");
   };
 
   const scrollToSection = (id: string) => {
@@ -165,16 +166,29 @@ export function Layout() {
               {/* User Profile or Auth Modal Trigger */}
               {currentUser ? (
                 <div className="flex items-center gap-3 border-l border-gray-800 pl-4">
-                  <button
-                    onClick={() => setIsOrdersModalOpen(true)}
-                    className="bg-yellow-400 text-black px-3 py-1.5 border-2 border-yellow-400 hover:bg-black hover:text-white hover:border-white transition-all flex items-center gap-1.5 font-black text-xs uppercase shadow-sm"
-                  >
-                    <Package size={14} />
-                    My Orders
-                  </button>
+                  {currentUser.role === "admin" ? (
+                    <button
+                      onClick={() => navigate("/admin")}
+                      className="bg-yellow-400 text-black px-3.5 py-1.5 border-2 border-yellow-400 hover:bg-black hover:text-white hover:border-white transition-all flex items-center gap-1.5 font-black text-xs uppercase shadow-md animate-pulse"
+                    >
+                      <ShieldCheck size={16} />
+                      Admin Dashboard
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setIsOrdersModalOpen(true)}
+                      className="bg-yellow-400 text-black px-3 py-1.5 border-2 border-yellow-400 hover:bg-black hover:text-white hover:border-white transition-all flex items-center gap-1.5 font-black text-xs uppercase shadow-sm"
+                    >
+                      <Package size={14} />
+                      My Orders
+                    </button>
+                  )}
                   <span className="flex items-center gap-1.5 text-xs text-gray-300 font-semibold">
                     <User size={16} className="text-yellow-400" />
                     {currentUser.name}
+                    {currentUser.role === "admin" && (
+                      <span className="bg-yellow-400 text-black text-[9px] font-black px-1.5 py-0.5 uppercase">ADMIN</span>
+                    )}
                   </span>
                   <button
                     onClick={handleLogout}
@@ -255,15 +269,27 @@ export function Layout() {
               <div className="pt-3 border-t border-gray-800 flex flex-col gap-3">
                 {currentUser ? (
                   <>
-                    <button
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setIsOrdersModalOpen(true);
-                      }}
-                      className="w-full bg-yellow-400 text-black py-2 text-xs font-black uppercase flex items-center justify-center gap-2 border-2 border-yellow-400"
-                    >
-                      <Package size={16} /> My Orders
-                    </button>
+                    {currentUser.role === "admin" ? (
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          navigate("/admin");
+                        }}
+                        className="w-full bg-yellow-400 text-black py-2 text-xs font-black uppercase flex items-center justify-center gap-2 border-2 border-yellow-400"
+                      >
+                        <ShieldCheck size={16} /> Admin Dashboard
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          setIsOrdersModalOpen(true);
+                        }}
+                        className="w-full bg-yellow-400 text-black py-2 text-xs font-black uppercase flex items-center justify-center gap-2 border-2 border-yellow-400"
+                      >
+                        <Package size={16} /> My Orders
+                      </button>
+                    )}
                     <div className="flex items-center justify-between w-full">
                       <span className="text-xs text-yellow-400 font-bold flex items-center gap-2">
                         <User size={16} /> {currentUser.name}

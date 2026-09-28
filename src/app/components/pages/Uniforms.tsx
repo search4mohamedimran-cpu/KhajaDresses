@@ -14,6 +14,7 @@ interface Uniform {
   school: string;
   image: string;
   stock?: number;
+  sizeStock?: Record<string, number>;
 }
 
 const mockUniforms: Uniform[] = [
@@ -560,14 +561,32 @@ export function Uniforms() {
   const categories = ["All", "Boys", "Girls", "Sports"];
 
   const loadUniforms = async () => {
+    let list: Uniform[] = mockUniforms;
     try {
       const data = await api.getUniforms();
       if (Array.isArray(data) && data.length > 0) {
-        setUniformsList(data);
+        list = data;
       }
     } catch (e) {
       console.warn("Could not fetch uniforms from DB API, using fallback data", e);
     }
+
+    try {
+      const localStockJson = localStorage.getItem("local_stock");
+      if (localStockJson) {
+        const localStock = JSON.parse(localStockJson);
+        list = list.map((item) => {
+          if (localStock[item.id] !== undefined) {
+            return { ...item, stock: localStock[item.id] };
+          }
+          return item;
+        });
+      }
+    } catch (err) {
+      console.error("Error applying local stock override:", err);
+    }
+
+    setUniformsList(list);
   };
 
   useEffect(() => {
@@ -619,14 +638,21 @@ export function Uniforms() {
     return selectedProductSizes[uniform.id] || uniform.sizes[0];
   };
 
+  const getSizeStock = (uniform: Uniform, size: string) => {
+    if (uniform.sizeStock && uniform.sizeStock[size] !== undefined) {
+      return uniform.sizeStock[size];
+    }
+    return uniform.stock ?? 25;
+  };
+
   const handleAddToCart = (uniform: Uniform, silent = false) => {
-    const availableStock = uniform.stock ?? 100;
+    const size = getSelectedSize(uniform);
+    const availableStock = getSizeStock(uniform, size);
     if (availableStock <= 0) {
-      toast.error(`Sorry, ${uniform.name} is currently out of stock!`);
+      toast.error(`Sorry, ${uniform.name} (Size ${size}) is currently out of stock!`);
       return;
     }
 
-    const size = getSelectedSize(uniform);
     const price = uniform.sizePrices?.[size] ?? uniform.price;
 
     const cartJson = localStorage.getItem("cart");
@@ -643,7 +669,7 @@ export function Uniforms() {
     const existingItemIndex = cart.findIndex((item: any) => item.id === uniform.id && item.size === size);
     if (existingItemIndex > -1) {
       if (cart[existingItemIndex].quantity + 1 > availableStock) {
-        toast.error(`Cannot add more. Maximum available stock is ${availableStock}.`);
+        toast.error(`Cannot add more. Maximum available stock for Size ${size} is ${availableStock}.`);
         return;
       }
       cart[existingItemIndex].quantity += 1;
@@ -669,9 +695,10 @@ export function Uniforms() {
   };
 
   const handleBuyNow = (uniform: Uniform) => {
-    const availableStock = uniform.stock ?? 100;
+    const size = getSelectedSize(uniform);
+    const availableStock = getSizeStock(uniform, size);
     if (availableStock <= 0) {
-      toast.error(`Sorry, ${uniform.name} is out of stock!`);
+      toast.error(`Sorry, ${uniform.name} (Size ${size}) is out of stock!`);
       return;
     }
     handleAddToCart(uniform, true);
@@ -829,21 +856,26 @@ export function Uniforms() {
                       </div>
                     </div>
 
-                    {/* Stock Display below each uniform in catalog */}
-                    <div className="mb-6 p-2.5 bg-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-bold text-gray-500 flex items-center gap-1">
-                        <PackageCheck size={14} className="text-black" /> Stock Status:
-                      </span>
-                      <span className={`text-xs font-black px-2 py-0.5 border ${
-                        (uniform.stock ?? 100) > 10
-                          ? "bg-emerald-100 text-emerald-800 border-emerald-400"
-                          : (uniform.stock ?? 100) > 0
-                            ? "bg-amber-100 text-amber-800 border-amber-400 animate-pulse"
-                            : "bg-red-100 text-red-700 border-red-400 uppercase tracking-wider"
-                      }`}>
-                        {(uniform.stock ?? 100) > 0 ? `${uniform.stock ?? 100} units left` : "Out of Stock"}
-                      </span>
-                    </div>
+                    {/* Stock Display for Selected Size */}
+                    {(() => {
+                      const currentSizeStock = getSizeStock(uniform, currentSize);
+                      return (
+                        <div className="mb-6 p-2.5 bg-gray-50 border-2 border-dashed border-gray-300 flex items-center justify-between">
+                          <span className="text-[10px] uppercase font-bold text-gray-500 flex items-center gap-1">
+                            <PackageCheck size={14} className="text-black" /> Stock (Size {currentSize}):
+                          </span>
+                          <span className={`text-xs font-black px-2 py-0.5 border ${
+                            currentSizeStock > 10
+                              ? "bg-emerald-100 text-emerald-800 border-emerald-400"
+                              : currentSizeStock > 0
+                                ? "bg-amber-100 text-amber-800 border-amber-400 animate-pulse"
+                                : "bg-red-100 text-red-700 border-red-400 uppercase tracking-wider"
+                          }`}>
+                            {currentSizeStock > 0 ? `${currentSizeStock} units left` : "Out of Stock"}
+                          </span>
+                        </div>
+                      );
+                    })()}
 
                     {/* Sizes Selector */}
                     <div className="mb-6">
@@ -851,14 +883,17 @@ export function Uniforms() {
                       <div className="flex flex-wrap gap-2">
                         {uniform.sizes.map((size) => {
                           const isSelected = currentSize === size;
+                          const sizeStock = getSizeStock(uniform, size);
                           return (
                             <button
                               key={size}
                               onClick={() => setSelectedProductSizes(prev => ({ ...prev, [uniform.id]: size }))}
-                              className={`border-2 px-3 py-1 text-[10px] font-black transition-all ${
+                              className={`border-2 px-3 py-1 text-[10px] font-black transition-all relative ${
                                 isSelected
                                   ? "border-black bg-black text-white"
-                                  : "border-gray-200 text-gray-400 hover:border-black hover:text-black"
+                                  : sizeStock <= 0
+                                    ? "border-red-200 text-red-400 bg-red-50 line-through cursor-pointer"
+                                    : "border-gray-200 text-gray-600 hover:border-black hover:text-black"
                               }`}
                             >
                               {size}
@@ -870,23 +905,28 @@ export function Uniforms() {
                   </div>
                 </div>
 
-                <div className="p-6 pt-0 flex flex-col gap-2">
-                  <button 
-                    onClick={() => handleAddToCart(uniform)}
-                    disabled={(uniform.stock ?? 100) <= 0}
-                    className="w-full bg-white text-black py-3 hover:bg-black hover:text-white border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed"
-                  >
-                    <ShoppingCart size={14} />
-                    {(uniform.stock ?? 100) > 0 ? "Add to Cart" : "Out of Stock"}
-                  </button>
-                  <button 
-                    onClick={() => handleBuyNow(uniform)}
-                    disabled={(uniform.stock ?? 100) <= 0}
-                    className="w-full bg-black text-white py-3 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed"
-                  >
-                    {(uniform.stock ?? 100) > 0 ? "Buy Now" : "Unavailable"}
-                  </button>
-                </div>
+                {(() => {
+                  const currentSizeStock = getSizeStock(uniform, currentSize);
+                  return (
+                    <div className="p-6 pt-0 flex flex-col gap-2">
+                      <button 
+                        onClick={() => handleAddToCart(uniform)}
+                        disabled={currentSizeStock <= 0}
+                        className="w-full bg-white text-black py-3 hover:bg-black hover:text-white border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed"
+                      >
+                        <ShoppingCart size={14} />
+                        {currentSizeStock > 0 ? "Add to Cart" : "Out of Stock"}
+                      </button>
+                      <button 
+                        onClick={() => handleBuyNow(uniform)}
+                        disabled={currentSizeStock <= 0}
+                        className="w-full bg-black text-white py-3 hover:bg-white hover:text-black border-2 border-black transition-all duration-300 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-[10px] disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-300 disabled:cursor-not-allowed"
+                      >
+                        {currentSizeStock > 0 ? "Buy Now" : "Unavailable"}
+                      </button>
+                    </div>
+                  );
+                })()}
               </div>
             );
           })}

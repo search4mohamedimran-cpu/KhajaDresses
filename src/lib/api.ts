@@ -65,5 +65,34 @@ export const api = {
     const response = await fetch(`${API_BASE_URL}/orders/${email}`);
     return response.json();
   },
+
+  // Admin API Methods
+  async getAdminOrders() {
+    const response = await fetch(`${API_BASE_URL}/admin/orders`);
+    return response.json();
+  },
+
+  async updateOrderStatus(orderId: string, status: string) {
+    const response = await fetch(`${API_BASE_URL}/admin/orders/${orderId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    });
+    return response.json();
+  },
+
+  async updateUniformSizeStock(uniformId: number, sizeStock: Record<string, number>) {
+    const response = await fetch(`${API_BASE_URL}/admin/uniforms/${uniformId}/size-stock`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sizeStock }),
+    });
+    return response.json();
+  },
+
+  async getAdminCustomers() {
+    const response = await fetch(`${API_BASE_URL}/admin/customers`);
+    return response.json();
+  },
 };
 

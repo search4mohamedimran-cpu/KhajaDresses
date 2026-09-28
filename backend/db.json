@@ -5,6 +5,13 @@
       "name": "Test User",
       "email": "test@example.com",
       "password": "$2b$10$K715gaqCqPDIUj7zwhsiv.MvzfPIksBAjVx7i8g1IeyrszYu5/iaG"
+    },
+    {
+      "id": "admin-1",
+      "name": "Kaja Admin",
+      "email": "admin@khajadresses.com",
+      "password": "$2b$10$SpKzD6RN/QxkGvUx5nBMwODAHYexCJea1P.UtytWV5xeJf.sJucL2",
+      "role": "admin"
     }
   ],
   "feedbacks": [
@@ -75,7 +82,12 @@
       },
       "school": "All Schools",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 97
+      "stock": 90,
+      "sizeStock": {
+        "32": 35,
+        "34": 30,
+        "36": 25
+      }
     },
     {
       "id": 2,
@@ -110,7 +122,20 @@
       },
       "school": "All Schools",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 100
+      "stock": 275,
+      "sizeStock": {
+        "20": 25,
+        "22": 25,
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25
+      }
     },
     {
       "id": 3,
@@ -131,7 +156,13 @@
       },
       "school": "All Schools",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 99,
+      "sizeStock": {
+        "28": 25,
+        "30": 25,
+        "32": 24,
+        "34": 25
+      }
     },
     {
       "id": 4,
@@ -162,7 +193,18 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 225,
+      "sizeStock": {
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25
+      }
     },
     {
       "id": 5,
@@ -185,7 +227,14 @@
       },
       "school": "St. Mary's High School",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 125,
+      "sizeStock": {
+        "20": 25,
+        "22": 25,
+        "24": 25,
+        "26": 25,
+        "28": 25
+      }
     },
     {
       "id": 6,
@@ -220,7 +269,20 @@
       },
       "school": "All Schools",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 275,
+      "sizeStock": {
+        "20": 25,
+        "22": 25,
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25
+      }
     },
     {
       "id": 7,
@@ -251,7 +313,18 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 225,
+      "sizeStock": {
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "XL": 25
+      }
     },
     {
       "id": 8,
@@ -282,7 +355,18 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 225,
+      "sizeStock": {
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25
+      }
     },
     {
       "id": 9,
@@ -309,7 +393,16 @@
       },
       "school": "All Schools",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 100
+      "stock": 175,
+      "sizeStock": {
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25,
+        "42": 25,
+        "44": 25,
+        "46": 25
+      }
     },
     {
       "id": 10,
@@ -340,7 +433,18 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 225,
+      "sizeStock": {
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25
+      }
     },
     {
       "id": 11,
@@ -379,7 +483,22 @@
       },
       "school": "All Schools",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 325,
+      "sizeStock": {
+        "20": 25,
+        "22": 25,
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25,
+        "40": 25,
+        "42": 25,
+        "44": 25
+      }
     },
     {
       "id": 12,
@@ -396,7 +515,11 @@
       },
       "school": "All Schools",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 50,
+      "sizeStock": {
+        "28-32": 25,
+        "32-36": 25
+      }
     },
     {
       "id": 13,
@@ -413,7 +536,11 @@
       },
       "school": "All Schools",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 50,
+      "sizeStock": {
+        "24-28": 25,
+        "28-32": 25
+      }
     },
     {
       "id": 14,
@@ -428,7 +555,10 @@
       },
       "school": "All Schools",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 100
+      "stock": 25,
+      "sizeStock": {
+        "One Size": 25
+      }
     },
     {
       "id": 15,
@@ -443,7 +573,10 @@
       },
       "school": "All Schools",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 100
+      "stock": 25,
+      "sizeStock": {
+        "One Size": 25
+      }
     },
     {
       "id": 16,
@@ -462,7 +595,12 @@
       },
       "school": "All Schools",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 100
+      "stock": 75,
+      "sizeStock": {
+        "S": 25,
+        "M": 25,
+        "L": 25
+      }
     },
     {
       "id": 17,
@@ -487,7 +625,15 @@
       },
       "school": "All Schools",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 150,
+      "sizeStock": {
+        "3": 25,
+        "4": 25,
+        "5": 25,
+        "6": 25,
+        "7": 25,
+        "8": 25
+      }
     },
     {
       "id": 18,
@@ -510,7 +656,14 @@
       },
       "school": "All Schools",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 125,
+      "sizeStock": {
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25
+      }
     },
     {
       "id": 19,
@@ -529,7 +682,12 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 75,
+      "sizeStock": {
+        "S": 25,
+        "M": 25,
+        "L": 25
+      }
     },
     {
       "id": 20,
@@ -554,7 +712,15 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 150,
+      "sizeStock": {
+        "2": 25,
+        "3": 25,
+        "4": 25,
+        "5": 25,
+        "6": 25,
+        "7": 25
+      }
     },
     {
       "id": 21,
@@ -577,7 +743,14 @@
       },
       "school": "All Schools",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 125,
+      "sizeStock": {
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25
+      }
     },
     {
       "id": 22,
@@ -602,7 +775,15 @@
       },
       "school": "All Schools",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 150,
+      "sizeStock": {
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25
+      }
     },
     {
       "id": 23,
@@ -623,7 +804,13 @@
       },
       "school": "All Schools",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 100,
+      "sizeStock": {
+        "S": 25,
+        "M": 25,
+        "L": 25,
+        "XL": 25
+      }
     },
     {
       "id": 24,
@@ -638,7 +825,10 @@
       },
       "school": "All Schools",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 25,
+      "sizeStock": {
+        "One Size": 25
+      }
     },
     {
       "id": 25,
@@ -665,7 +855,16 @@
       },
       "school": "All Schools",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 175,
+      "sizeStock": {
+        "22": 25,
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25
+      }
     },
     {
       "id": 26,
@@ -686,7 +885,13 @@
       },
       "school": "Kamarajar Matriculation Higher Secondary School",
       "image": "/uniforms/school_blazer.png",
-      "stock": 100
+      "stock": 100,
+      "sizeStock": {
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25
+      }
     },
     {
       "id": 27,
@@ -709,7 +914,14 @@
       },
       "school": "Mahatma Montessori Matriculation School",
       "image": "/uniforms/sports_uniform.png",
-      "stock": 100
+      "stock": 125,
+      "sizeStock": {
+        "22": 25,
+        "24": 25,
+        "26": 25,
+        "28": 25,
+        "30": 25
+      }
     },
     {
       "id": 28,
@@ -724,7 +936,10 @@
       },
       "school": "TVS Academy",
       "image": "/uniforms/boys_shirt.png",
-      "stock": 100
+      "stock": 25,
+      "sizeStock": {
+        "One Size": 25
+      }
     },
     {
       "id": 29,
@@ -751,7 +966,16 @@
       },
       "school": "St. Joseph's Girls Higher Secondary School",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 175,
+      "sizeStock": {
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25
+      }
     },
     {
       "id": 30,
@@ -778,10 +1002,601 @@
       },
       "school": "O.C.P.M. Girls Higher Secondary School",
       "image": "/uniforms/girls_skirt.png",
-      "stock": 100
+      "stock": 175,
+      "sizeStock": {
+        "26": 25,
+        "28": 25,
+        "30": 25,
+        "32": 25,
+        "34": 25,
+        "36": 25,
+        "38": 25
+      }
     }
   ],
   "orders": [
+    {
+      "_id": "ORD-798483",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 3,
+          "name": "Classic School Blazer - Navy",
+          "category": "Boys",
+          "price": 1299,
+          "size": "32",
+          "quantity": 1,
+          "school": "All Schools",
+          "image": "/uniforms/school_blazer.png"
+        }
+      ],
+      "totalAmount": 1299,
+      "shippingAddress": "1793, simmakal ",
+      "phone": "90809331770",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-28T05:03:18.483Z"
+    },
+    {
+      "_id": "ORD-670986",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "40",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:24:30.986Z"
+    },
+    {
+      "_id": "ORD-539544",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "40",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:22:19.544Z"
+    },
+    {
+      "_id": "ORD-332777",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "40",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:18:52.777Z"
+    },
+    {
+      "_id": "ORD-240538",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "40",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:17:20.538Z"
+    },
+    {
+      "_id": "ORD-077424",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "38",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:14:37.424Z"
+    },
+    {
+      "_id": "ORD-055895",
+      "user": {
+        "name": "Imran Tester",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "36",
+          "quantity": 4,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1400,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:14:15.895Z"
+    },
+    {
+      "_id": "ORD-936701",
+      "user": {
+        "name": "Imran Tester",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "36",
+          "quantity": 4,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1400,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:12:16.701Z"
+    },
+    {
+      "_id": "ORD-896015",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "34",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:11:36.015Z"
+    },
+    {
+      "_id": "ORD-831616",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "34",
+          "quantity": 4,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1400,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:10:31.616Z"
+    },
+    {
+      "_id": "ORD-733269",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "34",
+          "quantity": 2,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 700,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:08:53.269Z"
+    },
+    {
+      "_id": "ORD-327256",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "34",
+          "quantity": 3,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1050,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T16:02:07.256Z"
+    },
+    {
+      "_id": "ORD-173738",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "32",
+          "quantity": 5,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1750,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T15:59:33.738Z"
+    },
+    {
+      "_id": "ORD-076520",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "32",
+          "quantity": 4,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1400,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T15:57:56.520Z"
+    },
+    {
+      "_id": "ORD-947529",
+      "user": {
+        "name": "Imran User",
+        "email": "imran@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "32",
+          "quantity": 3,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 1050,
+      "shippingAddress": "257F Kamarajar Road, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T15:55:47.529Z"
+    },
+    {
+      "_id": "ORD-821473",
+      "user": {
+        "name": "Test User",
+        "email": "test@example.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 350,
+          "size": "32",
+          "quantity": 2,
+          "school": "All Schools"
+        }
+      ],
+      "totalAmount": 700,
+      "shippingAddress": "123 Test Street, Madurai",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-23T15:53:41.473Z"
+    },
+    {
+      "_id": "ORD-952515",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 3,
+          "name": "Classic School Blazer - Navy",
+          "category": "Boys",
+          "price": 1349,
+          "size": "34",
+          "quantity": 1,
+          "school": "All Schools",
+          "image": "/uniforms/school_blazer.png"
+        }
+      ],
+      "totalAmount": 1349,
+      "shippingAddress": "1793 simmalak aalangulam thiruvannamalai",
+      "phone": "9999999999",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-22T03:15:52.515Z"
+    },
+    {
+      "_id": "ORD-939227",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 470,
+          "size": "44",
+          "quantity": 1,
+          "school": "All Schools",
+          "image": "/uniforms/boys_shirt.png"
+        }
+      ],
+      "totalAmount": 470,
+      "shippingAddress": "1793 simmalak aalangulam thiruvannamalai",
+      "phone": "9999999999",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-22T03:15:39.227Z"
+    },
+    {
+      "_id": "ORD-903461",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "category": "Boys",
+          "price": 430,
+          "size": "40",
+          "quantity": 1,
+          "school": "All Schools",
+          "image": "/uniforms/boys_shirt.png"
+        }
+      ],
+      "totalAmount": 430,
+      "shippingAddress": "1793 simmalak aalangulam thiruvannamalai",
+      "phone": "9999999999",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-22T03:15:03.462Z"
+    },
+    {
+      "_id": "ORD-380532",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 2,
+          "name": "Girls White Shirt - Short Sleeve",
+          "category": "Girls",
+          "price": 230,
+          "size": "20",
+          "quantity": 1,
+          "school": "All Schools",
+          "image": "/uniforms/boys_shirt.png"
+        }
+      ],
+      "totalAmount": 230,
+      "shippingAddress": "1793 simmalak aalangulam thiruvannamalai",
+      "phone": "9999999999",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-22T02:49:40.532Z"
+    },
+    {
+      "_id": "ORD-296242",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 5,
+          "name": "Sports Uniform Set - Pro",
+          "category": "Sports",
+          "price": 480,
+          "size": "20",
+          "quantity": 1,
+          "school": "St. Mary's High School",
+          "image": "/uniforms/sports_uniform.png"
+        }
+      ],
+      "totalAmount": 480,
+      "shippingAddress": "1793",
+      "phone": "90809331770",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-21T01:48:16.242Z"
+    },
+    {
+      "_id": "ORD-203691",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 13,
+          "name": "Girls School Belt - Premium Leather",
+          "category": "Girls",
+          "price": 299,
+          "size": "24-28",
+          "quantity": 2,
+          "school": "All Schools",
+          "image": "/uniforms/school_blazer.png"
+        }
+      ],
+      "totalAmount": 598,
+      "shippingAddress": "1793 mela anupanadi , madurai",
+      "phone": "9080931770",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-18T06:50:03.691Z"
+    },
+    {
+      "_id": "ORD-537096",
+      "user": {
+        "name": "Test Imran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 1,
+          "name": "Boys White Shirt - Full Sleeve",
+          "price": 350,
+          "size": "32",
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 350,
+      "shippingAddress": "Test Address",
+      "phone": "9876543210",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-18T04:58:57.096Z"
+    },
+    {
+      "_id": "ORD-363154",
+      "user": {
+        "name": "search4mohamedimran",
+        "email": "search4mohamedimran@gmail.com"
+      },
+      "items": [
+        {
+          "id": 11,
+          "name": "Classic School Trouser",
+          "category": "Boys",
+          "price": 290,
+          "size": "28",
+          "quantity": 1,
+          "school": "All Schools",
+          "image": "/uniforms/school_blazer.png"
+        }
+      ],
+      "totalAmount": 290,
+      "shippingAddress": "k pudur,madurai",
+      "phone": "7826983406",
+      "paymentMethod": "COD",
+      "status": "Pending",
+      "createdAt": "2026-09-18T04:56:03.154Z"
+    },
     {
       "_id": "ORD-071205",
       "user": {
